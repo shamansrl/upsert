@@ -120,7 +120,7 @@ class Upsert
           %{
             SELECT array_agg(column_name::text) AS index_columns FROM information_schema.constraint_column_usage
               JOIN pg_catalog.pg_constraint ON constraint_name::text = conname::text
-              WHERE table_name = $1 AND conrelid = $1::regclass::oid AND contype = 'u'
+              WHERE table_name = $1 AND conrelid = $1::regclass::oid AND (contype = 'u' OR contype = 'p')
               GROUP BY table_catalog, table_name, constraint_name
           },
           [table_name]
